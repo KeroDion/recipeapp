@@ -2,6 +2,7 @@ document.querySelector('#btn').addEventListener('click',getRecipe)
 
 function getRecipe(){
     let ingredients = document.querySelector('#ingredient').value
+    let numberOfMissingIngredients = document.querySelector('#missingIngredients').value
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
     let url =`https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d7e0ded8af74b1897224317ce6c662c&ingredients=${ingredients}&addRecipeInformation=true`
     fetch(url)
@@ -9,6 +10,8 @@ function getRecipe(){
         .then(data => {
             console.log(data) //get the response(array) of the api
             console.log(data[0].title) //title of the first recipe
+            data = data.filter(el => el.missedIngredientCount <= numberOfMissingIngredients || 0); //The array is filtered for recipe that have the selected
+            console.log(data)
             document.querySelector('#recipeTitle').innerHTML = data[0].title // implement title into DOM
             document.querySelector('img').src = data[0].image // get the image of the first recipe
         
