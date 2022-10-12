@@ -1,8 +1,10 @@
 document.querySelector('#btn').addEventListener('click',getRecipe)
 
+
 function getRecipe(){
     let ingredients = document.querySelector('#ingredient').value
     let numberOfMissingIngredients = document.querySelector('#missingIngredients').value
+
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
     let url =`https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d7e0ded8af74b1897224317ce6c662c&ingredients=${ingredients}&addRecipeInformation=true`
     fetch(url)
@@ -12,7 +14,15 @@ function getRecipe(){
             console.log(data[0].title) //title of the first recipe
             data = data.filter(el => el.missedIngredientCount <= numberOfMissingIngredients || 0); //The array is filtered for recipe that have the selected
             console.log(data)
-            document.querySelector('#recipeTitle').innerHTML = data[0].title // implement title into DOM
+            //The function below is to wrap each recipe title in <a> and <h2> tags to be input into the html and to add the recipe id 
+            //as the anchor id so that formulas can be run on it when it is clicked
+            let recipeTitles = function(){
+                return data.map(el => `<a onClick="showRecipe(${el.id})" href="#" class="recipeTitles" id="${el.id}"><h2 >${el.title}</h2></a>`).join('')
+            }
+            
+            document.querySelector('#recipeTitle').innerHTML = recipeTitles()
+            //data.map(el => el === `<p>${el.title}</p>`)
+            // data[0].title // implement title into DOM
             document.querySelector('img').src = data[0].image // get the image of the first recipe
         
                 
@@ -22,6 +32,14 @@ function getRecipe(){
                 console.log(`error ${err}`)
             });
 }
+
+function showRecipe(id) {
+    let recipe = data.filter(el => el.id == id)
+    console.log(recipe)
+}
+
+
+
 function getPrice(){ //To use the fetch in getPrice function switch out getRecipe for the getPrice function in the Eventlistener
     
     //We get additional information from the ingredient search in the getRecipe function. Each recipe has a unique ID. we can grab that and do alot with it.
