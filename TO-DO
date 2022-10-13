@@ -1,0 +1,4 @@
+Loop through the array of objects to get the title and images
+Add them to the dom
+The ttile of the meal would be a link to another page where we would have the full information about the meals, that is the missed ingredients,used and unused, calories and summary infomation.
+Save the infomation in local storage.
