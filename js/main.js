@@ -1,5 +1,13 @@
 document.querySelector('#btn').addEventListener('click',getRecipe)
+//This uses event delegation to target each anchor text when clicked
+document.querySelector('#recipeContainer').addEventListener('click', event => {
+    if (event.target.className === 'recipeTitles') {
+        showRecipe(event.target.id);
+  }
+});
 
+//Including recipeArray here because at the moment the I need access to 'data' and it ceases to exist after getRecipe to run, so I'm making it global 
+let recipeArray = [];
 
 function getRecipe(){
     let ingredients = document.querySelector('#ingredient').value
@@ -13,17 +21,17 @@ function getRecipe(){
             console.log(data) //get the response(array) of the api
             console.log(data[0].title) //title of the first recipe
             data = data.filter(el => el.missedIngredientCount <= numberOfMissingIngredients || 0); //The array is filtered for recipe that have the selected
+            recipeArray = data
             console.log(data)
             //The function below is to wrap each recipe title in <a> and <h2> tags to be input into the html and to add the recipe id 
             //as the anchor id so that formulas can be run on it when it is clicked
             let recipeTitles = function(){
-                return data.map(el => `<a onClick="showRecipe(${el.id})" href="#" class="recipeTitles" id="${el.id}"><h2 >${el.title}</h2></a>`).join('')
+                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a></h2>`).join('')
             }
             
-            document.querySelector('#recipeTitle').innerHTML = recipeTitles()
+            document.querySelector('#recipeContainer').innerHTML = recipeTitles()
             //data.map(el => el === `<p>${el.title}</p>`)
-            // data[0].title // implement title into DOM
-            document.querySelector('img').src = data[0].image // get the image of the first recipe
+            
         
                 
                 
@@ -34,8 +42,16 @@ function getRecipe(){
 }
 
 function showRecipe(id) {
-    let recipe = data.filter(el => el.id == id)
-    console.log(recipe)
+    console.log(recipeArray)
+    console.log(id)
+    let targetRecipe = recipeArray.find(item => item.id == id)
+    console.log(targetRecipe)
+    document.querySelector('img').src = targetRecipe.image;
+    let missingIngedientsList = targetRecipe.missedIngredients.map(el => el = `<li>${el.name}</li>`).join('');
+    //
+    console.log(missingIngedientsList)
+    document.querySelector('#missingIngredientsList').innerHTML = missingIngedientsList
+    // let recipeInstructions = 
 }
 
 
