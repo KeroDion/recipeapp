@@ -54,7 +54,7 @@ function showRecipe(id) {
     console.log(missingIngedientsList)
     document.querySelector('#missingIngredientsList').innerHTML = missingIngedientsList
     
-    let recipeURL = `https://api.spoonacular.com/recipes/661447/information?apiKey=2d7e0ded8af74b1897224317ce6c662c&includeNutrition=false&instructionsRequired=true`
+    let recipeURL = `https://api.spoonacular.com/recipes/${id}/information?apiKey=2d7e0ded8af74b1897224317ce6c662c&includeNutrition=false&instructionsRequired=true`
     fetch(recipeURL)
         .then(res => res.json()) // parse response as JSON
         .then(data => {
