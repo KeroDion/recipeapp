@@ -1,36 +1,44 @@
 document.querySelector('#btn').addEventListener('click',getRecipe)
+//This uses event delegation to target each anchor text when clicked
+document.querySelector('#recipeContainer').addEventListener('click', event => {
+    if (event.target.className === 'recipeTitles') {
+        showRecipe(event.target.id);
+  }
+});
+
+//Including missingIngredientsArray here because at the moment the I need access to 'data' and it ceases to exist after getRecipe to run, so I'm making it global 
+let missingIngredientsArray = [];
+// This will be pushed to from the  showRecipe() function
+let recipeArray = [];
 
 function getRecipe(){
     let ingredients = document.querySelector('#ingredient').value
-    // let numberOfMissingIngredients = document.querySelector('#missingIngredients').value
-    let numberOfRecipes = document.querySelector('#numberOfRecipes').value
+
+    let numberOfMissingIngredients = document.querySelector('#missingIngredients').value
+
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
-    let url =`https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d7e0ded8af74b1897224317ce6c662c&ingredients=${ingredients}&addRecipeInformation=true&number=${numberOfRecipes}`
+    let url =`https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d7e0ded8af74b1897224317ce6c662c&ingredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true`
+
     fetch(url)
         .then(res => res.json()) // parse response as JSON
         .then(data => {
             console.log(data) //get the response(array) of the api
             console.log(data[0].title) //title of the first recipe
-            
-        //    document.querySelector('#recipeTitle').innerHTML = data[0].title // implement title into DOM
-        //     document.querySelector('img').src = data[0].image // get the image of the first recipe
-            for(let title in data){
-                if(data.hasOwnProperty(title)){
-                    console.log(data[title].title)
-                    console.log(data[title].image)
-                    // created an li and img tag for the title of the meal and image being returned
-                    const li = document.createElement('li')
-                    const img = document.createElement('img')
-                    // Added text and image to the li
-                    li.textContent = data[title].title
-                    img.src = data[title].image
-                    // append to the ul
-                    document.querySelector('ul').appendChild(li)
-                    document.querySelector('ul').appendChild (img)
-                    // make each object property returned a relative link, so when clicked on, it gives the full information needed from the request.
-                    
-                }
+
+            data = data.filter(el => el.missedIngredientCount <= numberOfMissingIngredients || 0); //The array is filtered for recipe that have the selected
+            missingIngredientsArray = data
+            console.log(data)
+            //The function below is to wrap each recipe title in <a> and <h2> tags to be input into the html and to add the recipe id 
+            //as the anchor id so that formulas can be run on it when it is clicked
+            let recipeTitles = function(){
+                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a></h2>`).join('')
             }
+            
+            document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+            //data.map(el => el === `<p>${el.title}</p>`)
+            
+        
+
                 
                 
             })
@@ -40,6 +48,32 @@ function getRecipe(){
 }
 
 
+function showRecipe(id) {
+    console.log(missingIngredientsArray)
+    console.log(id)
+    let targetRecipe = missingIngredientsArray.find(item => item.id == id)
+    console.log(targetRecipe)
+    document.querySelector('img').src = targetRecipe.image;
+    let missingIngedientsList = targetRecipe.missedIngredients.map(el => el = `<li>${el.name}</li>`).join('');
+    //
+    console.log(missingIngedientsList)
+    document.querySelector('#missingIngredientsList').innerHTML = missingIngedientsList
+    
+    let recipeURL = `https://api.spoonacular.com/recipes/${id}/information?apiKey=2d7e0ded8af74b1897224317ce6c662c&includeNutrition=false&instructionsRequired=true`
+    fetch(recipeURL)
+        .then(res => res.json()) // parse response as JSON
+        .then(data => {
+            console.log(data)
+            console.log(data.analyzedInstructions[0].steps)
+            let recipeInstructions = data.analyzedInstructions[0].steps.map(el => `<li>${el.number}: ${el.step}</li>`).join('')
+            document.querySelector('#recipeInstructions').innerHTML = recipeInstructions
+        })
+
+}
+
+
+
+function getPrice(){ //To use the fetch in getPrice function switch out getRecipe for the getPrice function in the Eventlistener
 
 
 
@@ -49,7 +83,7 @@ function getRecipe(){
 
 
 
-// function getPrice(){ //To use the fetch in getPrice function switch out getRecipe for the getPrice function in the Eventlistener
+
     
 //     //We get additional information from the ingredient search in the getRecipe function. Each recipe has a unique ID. we can grab that and do alot with it.
 //     //Here are two examples with step by step instructions and PriceBreakdown:
