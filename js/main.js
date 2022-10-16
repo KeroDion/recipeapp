@@ -73,7 +73,7 @@ function showRecipe(id) {
 
 
 
-function getPrice(){ //To use the fetch in getPrice function switch out getRecipe for the getPrice function in the Eventlistener
+// function getPrice(){ //To use the fetch in getPrice function switch out getRecipe for the getPrice function in the Eventlistener
 
 
 
@@ -112,3 +112,6 @@ function getPrice(){ //To use the fetch in getPrice function switch out getRecip
 //             console.log(`error ${err}`)
 //         });
 // }
+
+
+
