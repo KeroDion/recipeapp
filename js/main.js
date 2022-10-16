@@ -31,11 +31,13 @@ function getRecipe(){
             //The function below is to wrap each recipe title in <a> and <h2> tags to be input into the html and to add the recipe id 
             //as the anchor id so that formulas can be run on it when it is clicked
             let recipeTitles = function(){
-                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a></h2>`).join('')
+                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a></h2><button class='addFav'>Add to Favorites</button>`).join('')
             }
             
             document.querySelector('#recipeContainer').innerHTML = recipeTitles()
             //data.map(el => el === `<p>${el.title}</p>`)
+
+            addFavRecipe()
             
         
 
@@ -115,3 +117,57 @@ function showRecipe(id) {
 
 
 
+
+// Create a button for each recipe 
+// If button is clicked run add to fav function
+
+// Favs container containing saved recipes
+// Option to clear all
+// Clear individual
+
+//Fetch favourites on page load
+
+// Check there are favs in local storage
+
+// Add event listener to all add to fav buttons
+
+
+// Add favourite recipes to local storage
+function addFavRecipe() {
+    const addFavButtons = document.querySelectorAll('.addFav')
+        addFavButtons.forEach(btn => {
+            btn.addEventListener('click', event => {
+            console.log( "Clicked me" );
+    });
+ 
+ });
+    // let solInput = document.querySelector('addFav').value
+    // array.push(solInput.toString())
+    // localStorage.setItem('fav1', JSON.stringify(array))
+    // getFavLocal()
+}
+
+// // Fetch recipes from local storage
+// function getFavRecipe() {
+//     let getFav = JSON.parse(localStorage.getItem('fav1'))
+//     document.querySelector('#favList').textContent = getFav
+//     return getFav
+// }
+
+// // Clear favourite recipes from local storage
+// function clearFavRecipe() {
+//     localStorage.clear()
+//     document.querySelector('#favList').textContent = "No favourites selected"
+// }
+
+// Check if there are any favourites held in local storage
+// function checkFavs(){
+//     if (localStorage.getItem('fav1') === null) {
+//         const favArr = []
+//         return favArr
+//     } else {
+//         getFavLocal()
+//         const favArr = getFavLocal()
+//         return favArr
+//     }
+// }
