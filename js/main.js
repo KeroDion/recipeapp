@@ -1,4 +1,5 @@
-document.querySelector('#btn').addEventListener('click',getRecipe)
+document.querySelector('#btn').addEventListener('click', getRecipe)
+
 //This uses event delegation to target each anchor text when clicked
 document.querySelector('#recipeContainer').addEventListener('click', event => {
     if (event.target.className === 'recipeTitles') {
@@ -31,17 +32,17 @@ function getRecipe(){
             //The function below is to wrap each recipe title in <a> and <h2> tags to be input into the html and to add the recipe id 
             //as the anchor id so that formulas can be run on it when it is clicked
             let recipeTitles = function(){
-                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a></h2><button class='addFav'>Add to Favorites</button>`).join('')
+                return data.map((el, i) => `<div><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a></h2><button class='addFav'>Add to Favorites</button></div>`).join('')
             }
             
             document.querySelector('#recipeContainer').innerHTML = recipeTitles()
             //data.map(el => el === `<p>${el.title}</p>`)
 
-            addFavRecipe()
+            
             
         
 
-                
+            getClickedFav()    
                 
             })
             .catch(err => {
@@ -132,20 +133,30 @@ function showRecipe(id) {
 // Add event listener to all add to fav buttons
 
 
-// Add favourite recipes to local storage
-function addFavRecipe() {
+// When the recipe list is populated from getRecipe() a 'Add to favs' button is added to each element
+// Depending on which recipe 'add to fav' button was clicked the recipeId and recipeName are stored in variables
+// addFavRecipe() function is run with id and name as arguements
+function getClickedFav(){
     const addFavButtons = document.querySelectorAll('.addFav')
-        addFavButtons.forEach(btn => {
-            btn.addEventListener('click', event => {
-            console.log( "Clicked me" );
+        addFavButtons.forEach(favBtn => {
+            favBtn.addEventListener('click', function handleClick(event) {
+                let recipeId = event.target.previousElementSibling.firstChild.id
+                let recipeName = event.target.previousElementSibling.firstChild.textContent
+                addFavRecipe(recipeId, recipeName)
+         })
     });
- 
- });
-    // let solInput = document.querySelector('addFav').value
-    // array.push(solInput.toString())
-    // localStorage.setItem('fav1', JSON.stringify(array))
-    // getFavLocal()
 }
+
+// recipeId and recipeName are pushed into a new array of favorite recipes
+function addFavRecipe(recipeId, recipeName) {
+    console.log('clicked')
+    console.log(recipeId, recipeName)
+    let recipeArray = []
+    recipeArray.push([recipeId, recipeName])
+    console.log(recipeArray)
+    localStorage.setItem('favRecipe', JSON.stringify(recipeArray))
+}
+
 
 // // Fetch recipes from local storage
 // function getFavRecipe() {
