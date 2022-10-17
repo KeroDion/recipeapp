@@ -149,36 +149,23 @@ function getClickedFav(){
 
 // recipeId and recipeName are pushed into a new array of favorite recipes
 function addFavRecipe(recipeId, recipeName) {
-    console.log('clicked')
-    console.log(recipeId, recipeName)
-    let recipeArray = []
-    recipeArray.push([recipeId, recipeName])
-    console.log(recipeArray)
-    localStorage.setItem('favRecipe', JSON.stringify(recipeArray))
+    let favRecipeArr = JSON.parse(localStorage.getItem('favRecipe') || "[]")
+    favRecipeArr.push([recipeId, recipeName])
+    localStorage.setItem('favRecipe', JSON.stringify(favRecipeArr))
+    getFavRecipe()
 }
 
 
-// // Fetch recipes from local storage
-// function getFavRecipe() {
-//     let getFav = JSON.parse(localStorage.getItem('fav1'))
-//     document.querySelector('#favList').textContent = getFav
-//     return getFav
-// }
+// Fetch recipes from local storage
+function getFavRecipe() {
+    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
+    document.querySelector('#favoriteRecipesContainer').textContent = getFav
+}
+
+getFavRecipe()
 
 // // Clear favourite recipes from local storage
 // function clearFavRecipe() {
 //     localStorage.clear()
 //     document.querySelector('#favList').textContent = "No favourites selected"
-// }
-
-// Check if there are any favourites held in local storage
-// function checkFavs(){
-//     if (localStorage.getItem('fav1') === null) {
-//         const favArr = []
-//         return favArr
-//     } else {
-//         getFavLocal()
-//         const favArr = getFavLocal()
-//         return favArr
-//     }
 // }
