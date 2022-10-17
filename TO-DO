@@ -1,4 +1,7 @@
-Loop through the array of objects to get the title and images
-Add them to the dom
-The ttile of the meal would be a link to another page where we would have the full information about the meals, that is the missed ingredients,used and unused, calories and summary infomation.
-Save the infomation in local storage.
+Filter recipes by max calories.
+Filter by minimum protein.
+Filter by ingredients that we dont wat to include.
+Filter by portion.
+Drop-down with options of certain diets that would automatically filter out all food not included in that diet.
+A drop-down box of how the recipes are ordered. e.g Least to most missing ingredients, Least to most calories.
+Ability to save / store favourite recipes.
