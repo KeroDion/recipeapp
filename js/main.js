@@ -26,7 +26,7 @@ function getRecipe(){
                     img.src = data[title].image
                     // append to the ul
                     document.querySelector('ul').appendChild(li)
-                    document.querySelector('ul').appendChild (img)
+                    document.querySelector('ul').appendChild(img)
                     // make each object property returned a relative link, so when clicked on, it gives the full information needed from the request.
                     
                 }
