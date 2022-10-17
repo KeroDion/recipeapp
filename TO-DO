@@ -1,6 +1,6 @@
 Filter recipes by max calories.
 Filter by minimum protein.
-Filter by ingredients that we dont wat to include.
+Filter by ingredients that we dont want to include.
 Filter by portion.
 Drop-down with options of certain diets that would automatically filter out all food not included in that diet.
 A drop-down box of how the recipes are ordered. e.g Least to most missing ingredients, Least to most calories.

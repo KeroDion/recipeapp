@@ -31,7 +31,7 @@ function getRecipe(){
             //The function below is to wrap each recipe title in <a> and <h2> tags to be input into the html and to add the recipe id 
             //as the anchor id so that formulas can be run on it when it is clicked
             let recipeTitles = function(){
-                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a></h2>`).join('')
+                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a>| ${el.missedIngredientCount} Ingredient${el.missedIngredientCount > 1 ? 's' : ''}</h2>`).join('')
             }
             
             document.querySelector('#recipeContainer').innerHTML = recipeTitles()
