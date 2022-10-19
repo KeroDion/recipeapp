@@ -111,4 +111,27 @@ function getPrice(){ //To use the fetch in getPrice function switch out getRecip
 //         .catch(err => {
 //             console.log(`error ${err}`)
 //         });
-// }
+ }
+document.querySelector('#imgSearch').addEventListener('click',analyzeImage)
+let imageUrl = `https://cdn.discordapp.com/attachments/478331515093385237/1032250668322390036/unknown.png`
+let imageUrlFetch = `https://api.spoonacular.com/food/images/analyze?apiKey=2d7e0ded8af74b1897224317ce6c662c&imageUrl=${imageUrl}`
+ function analyzeImage(){
+    fetch(imageUrlFetch)
+        .then(res => res.json()) // parse response as JSON
+        .then(data => {
+            console.log(data) //get the response(array) of the api
+            
+
+            
+            
+        
+
+                
+                
+            })
+            .catch(err => {
+                console.log(`error ${err}`)
+            });
+}
+
+ 
