@@ -1,0 +1,19 @@
+#recipeContainer h2 {
+    display: grid;
+    grid-template-columns: 300px 300px;
+    padding: 0.3rem;
+}
+
+.hidden {
+    display: none;
+    padding: 1rem 0;
+}
+
+h2 {
+    padding: 1rem 0;
+}
+
+.hiddenResponsive {
+    display: none;
+    padding: 1rem 0;
+}
