@@ -7,22 +7,21 @@
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
+    
     <title>Recipe Search</title>
 </head>
 <body>
     <h1>Recipe Search</h1>
 
     <form action="">
-        <label for="input">Type in Ingredients below</label>
         <input type="text" id="ingredient" placeholder="Search by Ingredient">
-        <label for="input">Type in missing ingredients</label>
-        <input type="text" id="missingIngredients" placeholder="How many ing to buy?">
-        <label for="input">Type in number Of Recipes you would like to view</label>
-        <input type="text" id="numberOfRecipes" placeholder="MAX 10">
+    <!-- <form action="">
+        <input type="text" id="missingIngredients" placeholder="How many ingedients would you be willing to buy?"> -->
         
     </form>
     <span>Want to search for multiple ingredients? Type apples,flour for example</span>
     <button type="button" id="btn">Seach!</button>
+
 
 
 
@@ -34,10 +33,16 @@
     
 
 
-    <img src="" alt="">
-    
 
+    <h2 id="recipeHeading" class="hidden heading">Recipes</h2>
+    <div id="recipeContainer"></div>
+    <h2 id="recipeTitle"></h2>
+
+    <img src="" alt="">
+
+    <h2 class="hiddenResponsive">Missing Ingredients</h2>
     <div><ul id="missingIngredientsList"></ul></div>
+    <h2 class="hiddenResponsive">Instructions</h2>
     <div><ol id="recipeInstructions"></ol></div>
 
 
