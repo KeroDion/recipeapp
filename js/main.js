@@ -156,16 +156,55 @@ function addFavRecipe(recipeId, recipeName) {
 }
 
 
-// Fetch recipes from local storage
-function getFavRecipe() {
-    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
-    document.querySelector('#favoriteRecipesContainer').textContent = getFav
-}
+// Fetch recipes from local storage and paste into dom
+// function getFavRecipe() {
+//     let getFav = JSON.parse(localStorage.getItem('favRecipe'))
+// // if the item already exists in the dom do not make new
+//     if (getFav !== null) {
+//             getFav.forEach(item => {
+//                 let favUl = document.querySelector('#favList')
+//                 let favLi = document.createElement("li")
+//                 favLi.classList.add('favRecipe')
+//                 favUl.appendChild(favLi)
+                
+//                 favLi.innerHTML += item[1]
+//             })
+//         }
+
+// }
 
 getFavRecipe()
 
-// // Clear favourite recipes from local storage
-// function clearFavRecipe() {
-//     localStorage.clear()
-//     document.querySelector('#favList').textContent = "No favourites selected"
-// }
+// Clear favourite recipes from local storage
+function clearFavRecipe() {
+    localStorage.clear()
+    document.querySelector('#favoriteRecipesContainer').textContent = "No favourites selected"
+}
+
+// test
+function getFavRecipe() {
+    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
+    let existingRecipe = document.querySelectorAll('.favRecipe')
+    
+    if (getFav !== null || getFav === null ) {
+            getFav.forEach(item => {
+
+                    let favUl = document.querySelector('#favList')
+                    let favLi = document.createElement("li")
+                    favLi.classList.add('favRecipe')
+                    favUl.appendChild(favLi)
+                    
+                    favLi.innerHTML += `<a href="#" onclick="showRecipe(${item[0]})"class="recipeTitles" ">${item[1]}</a>`
+            })
+        }
+    // } else {
+    //     let favUl = document.querySelector('#favList')
+    //     let favLi = document.createElement("li")
+    //     favLi.classList.add('favRecipe')
+    //     favUl.appendChild(favLi)
+    //     let lastAdded = getFav.at(-1)
+                
+    //     favLi.innerHTML += lastAdded[1]
+    // }
+        
+}
