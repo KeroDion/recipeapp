@@ -21,8 +21,19 @@
     </form>
     <span>Want to search for multiple ingredients? Type apples,flour for example</span>
     <button type="button" id="btn">Seach!</button>
+    
+    <div>
+        <label for="order">Order recipes by:</label>
 
-
+        <select name="order" id="orderSelector">
+            <option value=""> Choose an option </option>
+            <option value="sortMissingIngredients">Missing ingredients</option>
+            <option value="sortPricePerServing">Price per serving</option>
+            <option value="sortProtein">Protein</option>
+            <option value="sortCarbs">Carbohydrates</option>
+            <option value="sortCalories">Calories</option>
+        </select>
+    </div>
 
 
     <div id="recipeContainer">Recipe Title</div>
@@ -40,8 +51,8 @@
 
     <img src="" alt="">
 
-    <h2 class="hiddenResponsive">Missing Ingredients</h2>
-    <div><ul id="missingIngredientsList"></ul></div>
+    <h2 class="hiddenResponsive">Ingredients</h2>
+    <div><ul id="ingredientsList"></ul></div>
     <h2 class="hiddenResponsive">Instructions</h2>
     <div><ol id="recipeInstructions"></ol></div>
 

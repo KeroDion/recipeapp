@@ -10,6 +10,11 @@ document.querySelector('#recipeContainer').addEventListener('click', event => {
   
 });
 
+//This event listener triggers when a select option is chosen and reorders the recipes
+document.querySelector('#orderSelector').addEventListener('change', () => {
+    changeRecipeOrder(event);
+});
+
 //Including missingIngredientsArray here because at the moment the I need access to 'data' and it ceases to exist after getRecipe to run, so I'm making it global 
 let missingIngredientsArray = [];
 // This will be pushed to from the  showRecipe() function
@@ -20,22 +25,22 @@ function getRecipe(){
     // let numberOfMissingIngredients = document.querySelector('#missingIngredients').value
 
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
-    let url =`https://api.spoonacular.com/recipes/findByIngredients?apiKey=2d7e0ded8af74b1897224317ce6c662c&ingredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20`
+    let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=2d7e0ded8af74b1897224317ce6c662c&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
     fetch(url)
         .then(res => res.json()) // parse response as JSON
         .then(data => {
             console.log(data) //get the response(array) of the api
-            console.log(data[0].title) //title of the first recipe
-            // data = data.filter(el => el.missedIngredientCount <= numberOfMissingIngredients || 0); //The array is filtered for recipe that have the selected
-            missingIngredientsArray = data
-            console.log(data)
-            //the array is then sorted by least to most missing ingredients
-            data = data.sort((a,b) => a.missedIngredientCount - b.missedIngredientCount)
-            console.log(data)
-            //The function below is to wrap each recipe title in <a> and <h2> tags to be input into the html and to add the recipe id 
-            //as the anchor id so that formulas can be run on it when it is clicked
+            console.log(data.results.length) //title of the first recipe
+            //Add the the array of recipe objects to the global variable for access later
+            recipeArray = data.results;
+            console.log(`recipe array before ${recipeArray}`)
+            //sort the recipes by least to most missing ingredients
+            recipeArray = recipeArray.sort((a,b) => a.missedIngredientCount - b.missedIngredientCount)
+
+            console.log(`recipe array after ${recipeArray}`)
+            //This is a function that wraps the titles of the returned recipes in <h2> and <a> tags to input into the dom
             let recipeTitles = function(){
-                return data.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
+                return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
             }
             
             document.querySelector('#recipeContainer').innerHTML = recipeTitles()
@@ -51,33 +56,26 @@ function getRecipe(){
 }
 
 function showRecipe(id) {
-    console.log(missingIngredientsArray)
     //Remove the hiddenRecipe tag from the relevant h2s so they show in the DOM
     removeHiddenResponsive()
     console.log(id)
+
     //Extract the recipe object from the main array
-    let targetRecipe = missingIngredientsArray.find(item => item.id == id)
-    console.log(targetRecipe)
+    let targetRecipe = recipeArray.find(item => item.id == id)
+    console.log(`targetRecipe ${targetRecipe}`)
     //Add the image of the target recipe to the DOM
     document.querySelector('img').src = targetRecipe.image;
     //Ectract the lise of missing ingredients form the target recipe and wrap them in li tags
-    let missingIngedientsList = targetRecipe.missedIngredients.map(el => el = `<li>${el.name}</li>`).join('');
+    let ingredientsList = targetRecipe.extendedIngredients.map(el => el = `<li>${el.name}</li>`).join('');
     //
-    console.log(missingIngedientsList)
+    console.log(`ingredientsList ${ingredientsList}`)
     //insert the missing ingredients into the DOM
-    document.querySelector('#missingIngredientsList').innerHTML = missingIngedientsList
+    document.querySelector('#ingredientsList').innerHTML = ingredientsList;
     //Add the recipe title to the DOM
     document.querySelector('#recipeTitle').innerHTML = `${targetRecipe.title}`
-    let recipeURL = `https://api.spoonacular.com/recipes/${id}/information?apiKey=2d7e0ded8af74b1897224317ce6c662c&includeNutrition=false&instructionsRequired=true`
-    fetch(recipeURL)
-        .then(res => res.json()) // parse response as JSON
-        .then(data => {
-            console.log(data)
-            console.log(data.analyzedInstructions[0].steps)
-            let recipeInstructions = data.analyzedInstructions[0].steps.map(el => `<li>${el.number}: ${el.step}</li>`).join('')
-            document.querySelector('#recipeInstructions').innerHTML = recipeInstructions
-        })
-
+    let recipeInstructions = targetRecipe.analyzedInstructions[0].steps.map(el => `<li>${el.number}: ${el.step}</li>`)
+    document.querySelector('#recipeInstructions').innerHTML = recipeInstructions;
+    
 }
 
 
@@ -152,5 +150,51 @@ function removeHiddenResponsive() {
     hiddenElements.forEach(el => {
         el.classList.remove('hiddenResponsive')
     });
+}
+
+function changeRecipeOrder(event) {
+    //This reorders the recipes to go from least to most missing ingredients and adds the number of missing ingredients in the text
+    if (event.target.value == 'sortMissingIngredients') {
+        recipeArray = recipeArray.sort((a,b) => a.missedIngredientCount - b.missedIngredientCount)
+        let recipeTitles = function(){
+            
+            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
+            
+        }
+        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+    //This reorders the recipes from least to most price per serving and adds text about the price per serving rounded to two digits
+    } else if (event.target.value == 'sortPricePerServing'){
+        recipeArray = recipeArray.sort((a,b) => a.pricePerServing - b.pricePerServing)
+        let recipeTitles = function(){
+            
+            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Price Per Serving: $${(el.pricePerServing / 100).toFixed(2)}</h2>`).join('')
+        }
+        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+    //THis reorders the recipes from most to least protein
+    } else if (event.target.value == 'sortProtein') {
+        
+        recipeArray = recipeArray.sort((a,b) => b.nutrition.nutrients[8].amount - a.nutrition.nutrients[8].amount)
+        let recipeTitles = function(){
+            
+            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Protein: ${(el.nutrition.nutrients[8].amount).toFixed(2)}g</h2>`).join('')
+        }
+        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+    } else if (event.target.value == 'sortCarbs') {
+        
+        recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[3].amount - b.nutrition.nutrients[3].amount)
+        let recipeTitles = function(){
+            
+            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Carbohydrates: ${(el.nutrition.nutrients[3].amount).toFixed(2)}g</h2>`).join('')
+        }
+        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+    } else if (event.target.value == 'sortCalories') {
+        
+        recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[0].amount - b.nutrition.nutrients[0].amount)
+        let recipeTitles = function(){
+            
+            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Calories: ${(el.nutrition.nutrients[0].amount).toFixed(0)}kcal</h2>`).join('')
+        }
+        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+    }
 }
 
