@@ -1,9 +1,18 @@
+gsap.registerPlugin(ScrollTrigger)
+
 document.querySelector('#btn').addEventListener('click',() => {
     getRecipe();
     removeHidden();
+    timeline
+    .to(
+        '#recipeTitleContainer h2', {
+            opacity: 1
+        });
+  
+    timeline.play();
 });
 //This uses event delegation to target each anchor text when clicked
-document.querySelector('#recipeContainer').addEventListener('click', event => {
+document.querySelector('#recipeTitleContainer').addEventListener('click', event => {
     if (event.target.className === 'recipeTitles') {
         showRecipe(event.target.id);
   }
@@ -25,7 +34,7 @@ function getRecipe(){
     // let numberOfMissingIngredients = document.querySelector('#missingIngredients').value
 
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
-    let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=2d7e0ded8af74b1897224317ce6c662c&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
+    let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=a0ed62a1ff30488f91a66b24fec77e58&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
     fetch(url)
         .then(res => res.json()) // parse response as JSON
         .then(data => {
@@ -43,7 +52,7 @@ function getRecipe(){
                 return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
             }
             
-            document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+            document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
             //data.map(el => el === `<p>${el.title}</p>`)
             
         
@@ -73,43 +82,12 @@ function showRecipe(id) {
     document.querySelector('#ingredientsList').innerHTML = ingredientsList;
     //Add the recipe title to the DOM
     document.querySelector('#recipeTitle').innerHTML = `${targetRecipe.title}`
-    let recipeInstructions = targetRecipe.analyzedInstructions[0].steps.map(el => `<li>${el.number}: ${el.step}</li>`)
+    let recipeInstructions = targetRecipe.analyzedInstructions[0].steps.map(el => `<li>${el.number}: ${el.step}</li>`).join('')
     document.querySelector('#recipeInstructions').innerHTML = recipeInstructions;
     
 }
 
 
-
-function getPrice(){ //To use the fetch in getPrice function switch out getRecipe for the getPrice function in the Eventlistener
-    
-    //We get additional information from the ingredient search in the getRecipe function. Each recipe has a unique ID. we can grab that and do alot with it.
-    //Here are two examples with step by step instructions and PriceBreakdown:
-
-
-    //Step by step Instructions:
-    //Instructions come with separate ingredients you need per Step
-    fetch(`https://api.spoonacular.com/recipes/${661447}/analyzedInstructions?apiKey=2d7e0ded8af74b1897224317ce6c662c`) // url link for cooking instruction
-    
-    
-    //Price Breakdown:
-    //price breakdown has prices for units bought. Blueberries for example "cost" 25$ roughly, that should be per Kilogramm or similar. 
-    //We also get price per serving of the meal. That number was more realistic.
-    //commeted out for now so we can use the instruction fetch:
-    
-    // fetch(`https://api.spoonacular.com/recipes/${661447}/priceBreakdownWidget.json?apiKey=2d7e0ded8af74b1897224317ce6c662c`) 
-    
-    .then(res => res.json()) // parse response as JSON
-    .then(data => {          
-        console.log(data)    // Here we get the data from the api and can analyze it
-        
-            
-            
-
-         })
-//         .catch(err => {
-//             console.log(`error ${err}`)
-//         });
- }
 document.querySelector('#imgSearch').addEventListener('click',analyzeImage)
 let imageUrl = `https://cdn.discordapp.com/attachments/478331515093385237/1032250668322390036/unknown.png`
 let imageUrlFetch = `https://api.spoonacular.com/food/images/analyze?apiKey=2d7e0ded8af74b1897224317ce6c662c&imageUrl=${imageUrl}`
@@ -161,7 +139,7 @@ function changeRecipeOrder(event) {
             return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
             
         }
-        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+        document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     //This reorders the recipes from least to most price per serving and adds text about the price per serving rounded to two digits
     } else if (event.target.value == 'sortPricePerServing'){
         recipeArray = recipeArray.sort((a,b) => a.pricePerServing - b.pricePerServing)
@@ -169,7 +147,7 @@ function changeRecipeOrder(event) {
             
             return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Price Per Serving: $${(el.pricePerServing / 100).toFixed(2)}</h2>`).join('')
         }
-        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+        document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     //THis reorders the recipes from most to least protein
     } else if (event.target.value == 'sortProtein') {
         
@@ -178,7 +156,7 @@ function changeRecipeOrder(event) {
             
             return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Protein: ${(el.nutrition.nutrients[8].amount).toFixed(2)}g</h2>`).join('')
         }
-        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+        document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     } else if (event.target.value == 'sortCarbs') {
         
         recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[3].amount - b.nutrition.nutrients[3].amount)
@@ -186,7 +164,7 @@ function changeRecipeOrder(event) {
             
             return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Carbohydrates: ${(el.nutrition.nutrients[3].amount).toFixed(2)}g</h2>`).join('')
         }
-        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+        document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     } else if (event.target.value == 'sortCalories') {
         
         recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[0].amount - b.nutrition.nutrients[0].amount)
@@ -194,7 +172,72 @@ function changeRecipeOrder(event) {
             
             return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Calories: ${(el.nutrition.nutrients[0].amount).toFixed(0)}kcal</h2>`).join('')
         }
-        document.querySelector('#recipeContainer').innerHTML = recipeTitles()
+        document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     }
 }
 
+
+//this lowers whatever is selected by 20 pixels over 3 seconds and bounces it at the end
+gsap.to('#searchSection', {
+    duration: 3, 
+    y: 20,
+    ease: "elastic.out(1, 0.3)",
+    // This stagger is messing up the layout atm
+    stagger: 0.01,
+
+})
+//This fades the background image to a darker color over 3 seconds
+gsap.to('#searchBackgroundImage', {duration: 3, backgroundColor: 'rgba(0,0,0,0.7)'})
+//This changes all the font color in the searchSection to white
+gsap.to('#searchSection', {duration: 3, color: 'white'})
+//This is to change all the backgounds of the boxs form transparent to white
+gsap.to('button', {duration: 3, backgroundColor: 'white'})
+gsap.to('select', {duration: 3, backgroundColor: 'white'})
+gsap.to('input', {duration: 3, backgroundColor: 'white'})
+
+const timeline = gsap.timeline({
+    duration: 1,
+    paused: true
+});
+
+
+//this function reduces the opacity of the text in the top section as you scroll down the screen
+
+function init() {
+
+        gsap.to('#searchSection', {opacity: 0, scrollTrigger: {
+            trigger: '#searchBackgroundImage',
+            start: 'top top-=150',
+            end: 'bottom center',
+            scrub: true,
+            
+            
+        }});
+        gsap.set('#recipeDetails', {scrollTrigger: {
+            trigger: '#recipeDetails',
+            start: 'top bottom-=20%',
+            toggleClass: 'active',
+            // markers: true
+        }})
+
+}
+
+window.addEventListener('load', function() {
+    init();
+})
+
+//slide in code
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        console.log(entry)
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+        } else {
+            entry.target.classList.remove('show');
+        }
+    });
+});
+
+const hiddenElements = document.querySelectorAll('.hiddenLeft');
+hiddenElements.forEach((el) => observer.observe(el));

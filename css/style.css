@@ -1,8 +1,9 @@
-body {
-    padding: 1rem;
+
+:root {
+	font-size: 62.5%;
 }
 
-#recipeContainer h2 {
+#recipeTitleContainer h2 {
     display: grid;
     grid-template-columns: 300px 300px;
     padding: 0.3rem;
@@ -13,10 +14,11 @@ body {
     padding: 1rem 0;
 }
 
+
 h2 {
     font-size: 1rem;
     padding: 1rem 0;
-}
+} 
 
 .hiddenResponsive {
     display: none;
@@ -25,4 +27,108 @@ h2 {
 
 li {
     padding: 0.3rem 0;
+}
+
+#searchBackgroundImage {
+    background-attachment: fixed;
+    background-image: url("images/openFridge.jpeg");
+    background-position: center;
+    
+    background-size: cover;
+ 
+    background-blend-mode: multiply;
+    
+    background-color: rgba(0,0,0,0);
+    /* This sets the height of the background image to the height of the viewport */
+    min-height: 100vh;
+}
+
+#searchSection {
+    padding: 1rem;
+    color: black;
+    font-family: 'Noto Sans Mono', monospace;
+    font-weight: 100;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+p {
+    font-size: 1.5rem;
+    padding: 2rem 0;
+}
+
+form {
+    padding: 1rem 0;
+}
+
+button {
+    margin: 1rem 0;
+    padding: 0.5rem;
+}
+input {
+    padding: 1rem;
+    width: 20rem;
+}
+
+a {
+    color: white;
+} 
+
+
+/* These are set to transparent and then the background changed with greensock */
+input, button, select {
+    background-color:rgba(0,0,0,0); 
+}
+
+h1 {
+    font-size: 6rem;
+    text-align: center;
+} 
+
+h1 + h2 {
+    font-size: 3rem;
+    text-align: center;
+}
+
+/* #recipeTitleContainer h2 {
+    opacity: 0.1;
+} */
+
+/* .active {
+    background-color: blue;
+} */
+
+#recipeDetails {
+    max-width: 800px;
+    padding: 2rem;
+    margin: 0 auto;
+    font-family: 'Noto Sans Mono', monospace;
+}
+
+#recipeDetails h2 {
+    font-size: 2rem;
+}
+
+#recipeDetails ol {
+    line-height: 20px;
+    padding: 2rem 0;
+}
+
+
+
+.hiddenLeft {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateX(-090%);
+    transition: all 1s;
+	
+}
+
+
+
+.show {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0%);
+	transition: all 1s;
 }
