@@ -3,13 +3,9 @@ gsap.registerPlugin(ScrollTrigger)
 document.querySelector('#btn').addEventListener('click',() => {
     getRecipe();
     removeHidden();
-    timeline
-    .to(
-        '#recipeTitleContainer h2', {
-            opacity: 1
-        });
+    
   
-    timeline.play();
+    
 });
 //This uses event delegation to target each anchor text when clicked
 document.querySelector('#recipeTitleContainer').addEventListener('click', event => {
@@ -30,8 +26,9 @@ let missingIngredientsArray = [];
 let recipeArray = [];
 
 function getRecipe(){
+    
     let ingredients = document.querySelector('#ingredient').value
-    // let numberOfMissingIngredients = document.querySelector('#missingIngredients').value
+
 
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
     let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=a0ed62a1ff30488f91a66b24fec77e58&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
@@ -53,10 +50,15 @@ function getRecipe(){
             }
             
             document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
-            //data.map(el => el === `<p>${el.title}</p>`)
-            
-        
-                
+           
+            //This triggers the opacity of the recipe title list to go to 1, it has to be here, 
+            //because the elements need to exist first
+
+            gsap.from("#recipeTitleContainer h2", {
+                opacity: 0,
+                duration: 1,
+                stagger:.1
+              });
                 
             })
             .catch(err => {
@@ -181,9 +183,9 @@ function changeRecipeOrder(event) {
 gsap.to('#searchSection', {
     duration: 3, 
     y: 20,
-    ease: "elastic.out(1, 0.3)",
+    ease: "elastic.out(1.9, 0.3)",
     // This stagger is messing up the layout atm
-    stagger: 0.01,
+    stagger: 0.2,
 
 })
 //This fades the background image to a darker color over 3 seconds
@@ -195,17 +197,19 @@ gsap.to('button', {duration: 3, backgroundColor: 'white'})
 gsap.to('select', {duration: 3, backgroundColor: 'white'})
 gsap.to('input', {duration: 3, backgroundColor: 'white'})
 
-const timeline = gsap.timeline({
-    duration: 1,
-    paused: true
-});
+
+//this timeline might be completely unecessary with the current setup
+// const timeline = gsap.timeline({
+    
+//     paused: true
+// });
 
 
 //this function reduces the opacity of the text in the top section as you scroll down the screen
 
 function init() {
 
-        gsap.to('#searchSection', {opacity: 0, scrollTrigger: {
+        gsap.to('#searchSectionBody', {opacity: 0, scrollTrigger: {
             trigger: '#searchBackgroundImage',
             start: 'top top-=150',
             end: 'bottom center',
