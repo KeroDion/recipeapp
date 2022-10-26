@@ -17,39 +17,42 @@
 <body>
     <section id="searchBackgroundImage">
         <section id="searchSection">
-            <h1>What's In The Fridge</h1>
-            <h2>Make Cooking Easy</h2>
+            <div id="searchSectionTitle">
+                <h1>What's In The Fridge</h1>
+            </div>  
+            <div id="searchSectionBody">
+                <h2>Make Cooking Easy</h2>
 
-            <p>Simply enter the food you already have at home and we'll return you delicious meals you can make with them</p>
+                <p>Simply enter the food you already have at home and we'll return you delicious meals you can make with them</p>
 
-            <form action="">
-                <input type="text" id="ingredient" placeholder="Search by Ingredient">
-            <!-- <form action="">
-                <input type="text" id="missingIngredients" placeholder="How many ingedients would you be willing to buy?"> -->
+                <form action="">
+                    <input type="text" id="ingredient" placeholder="Search by Ingredient">
+                <!-- <form action="">
+                    <input type="text" id="missingIngredients" placeholder="How many ingedients would you be willing to buy?"> -->
+                    
+                </form>
+                <div><span>Want to search for multiple ingredients? Just use a comma. Type apples,flour for example</span></div>
+                <button type="button" id="btn">Search!</button>
                 
-            </form>
-            <div><span>Want to search for multiple ingredients? Just use a comma. Type apples,flour for example</span></div>
-            <button type="button" id="btn">Search!</button>
-            
-            <div class="hidden">
-                <label for="order">Order recipes by:</label>
+                <div class="hidden">
+                    <label for="order">Order recipes by:</label>
 
-                <select name="order" id="orderSelector" >
-                    <option value=""> Choose an option </option>
-                    <option value="sortMissingIngredients">Missing ingredients</option>
-                    <option value="sortPricePerServing">Price per serving</option>
-                    <option value="sortProtein">Protein</option>
-                    <option value="sortCarbs">Carbohydrates</option>
-                    <option value="sortCalories">Calories</option>
-                </select>
+                    <select name="order" id="orderSelector" >
+                        <option value=""> Choose an option </option>
+                        <option value="sortMissingIngredients">Missing ingredients</option>
+                        <option value="sortPricePerServing">Price per serving</option>
+                        <option value="sortProtein">Protein</option>
+                        <option value="sortCarbs">Carbohydrates</option>
+                        <option value="sortCalories">Calories</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="button" id="imgSearch">imgSearch</button>
+                </div>
+
+                <div id="recipeTitleContainer"></div>
             </div>
-
-            <div>
-                <button type="button" id="imgSearch">imgSearch</button>
-            </div>
-
-            <div id="recipeTitleContainer"></div>
-
             
         </section>
     </section>
