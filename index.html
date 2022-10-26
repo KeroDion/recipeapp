@@ -4,31 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100;300;400;600;700&family=Sora:wght@100;300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
+    
     <title>Recipe Search</title>
 </head>
 <body>
-    <h1>Recipe Search</h1>
+    <section id="searchBackgroundImage">
+        <section id="searchSection">
+            <div id="searchSectionTitle">
+                <h1>What's In The Fridge</h1>
+            </div>  
+            <div id="searchSectionBody">
+                <h2>Make Cooking Easy</h2>
 
-    <form action="">
-        <label for="input">Type in Ingredients below</label>
-        <input type="text" id="ingredient" placeholder="Search by Ingredient">
-        <label for="input">Type in missing ingredients</label>
-        <input type="text" id="missingIngredients" placeholder="How many ing to buy?">
-        
-    </form>
-    <span>Want to search for multiple ingredients? Type apples,flour for example</span>
-    <button type="button" id="btn">Seach!</button>
+                <p>Simply enter the food you already have at home and we'll return you delicious meals you can make with them</p>
 
+                <form action="">
+                    <input type="text" id="ingredient" placeholder="Search by Ingredient">
+                <!-- <form action="">
+                    <input type="text" id="missingIngredients" placeholder="How many ingedients would you be willing to buy?"> -->
+                    
+                </form>
+                <div><span>Want to search for multiple ingredients? Just use a comma. Type apples,flour for example</span></div>
+                <button type="button" id="btn">Search!</button>
+                
+                <div class="hidden">
+                    <label for="order">Order recipes by:</label>
 
+                    <select name="order" id="orderSelector" >
+                        <option value=""> Choose an option </option>
+                        <option value="sortMissingIngredients">Missing ingredients</option>
+                        <option value="sortPricePerServing">Price per serving</option>
+                        <option value="sortProtein">Protein</option>
+                        <option value="sortCarbs">Carbohydrates</option>
+                        <option value="sortCalories">Calories</option>
+                    </select>
+                </div>
 
-    <div id="recipeContainer">Recipe Title</div>
+                <div>
+                    <button type="button" id="imgSearch">imgSearch</button>
+                </div>
 
+                <div id="recipeTitleContainer"></div>
+            </div>
+            
+        </section>
+    </section>
+    <section id="recipeDetails">
     
-    
 
+                <div>
+                    <button type="button" id="imgSearch">imgSearch</button>
+                </div>
 
     <img src="" alt="">
     
@@ -38,11 +71,23 @@
 
     <div id="favoriteRecipesContainer">
         <ul id="favList">
+        <h2 id="recipeHeading" class="hiddenResponsive heading hiddenLeft">Recipe</h2>
+        <div class="hiddenLeft" id="recipeContainer"></div>
+        <h2 class="hiddenLeft" id="recipeTitle"></h2>
 
         </ul>
     </div>
     <button id="clearFavs" onclick="clearFavRecipe()">Remove Favourites</button>
+        <img class="hiddenLeft" src="" alt="">
 
+        <h2 class="hiddenResponsive hiddenLeft">Ingredients</h2>
+        <div  class="hiddenLeft"><ul id="ingredientsList"></ul></div>
+        <h2 class="hiddenResponsive hiddenLeft">Instructions</h2>
+        <div  class="hiddenLeft"><ol id="recipeInstructions"></ol></div> 
+    </section>
+    <!-- this is a link to the gsap api i think... -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js></script>
     <script text="text/javascript" src="js/main.js"></script>
 </body>
 </html>
