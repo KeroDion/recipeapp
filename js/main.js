@@ -1,7 +1,7 @@
 gsap.registerPlugin(ScrollTrigger)
 
 document.querySelector('#btn').addEventListener('click',() => {
-     getRecipe();
+    getRecipe();
     removeHidden();
     
   
@@ -32,7 +32,7 @@ function getRecipe(){
 
 
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
-    let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=a0ed62a1ff30488f91a66b24fec77e58&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
+    let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=3073d7dbb58f49c79eafba9ca3fe1cfd&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
     fetch(url)
         .then(res => res.json()) // parse response as JSON
         .then(data => {
@@ -47,7 +47,7 @@ function getRecipe(){
             console.log(`recipe array after ${recipeArray}`)
             //This is a function that wraps the titles of the returned recipes in <h2> and <a> tags to input into the dom
             let recipeTitles = function(){
-                return recipeArray.map((el, i) => `<div><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2><button class='addFav'>Add to Favorites</button></div>`).join('')
+                return recipeArray.map((el, i) => `<div><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2><button type='button' class='addFav'>Add to Favorites</button></div>`).join('')
             }
             
             document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
@@ -245,23 +245,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 });
 
-
-
-
-// Create a button for each recipe 
-// If button is clicked run add to fav function
-
-// Favs container containing saved recipes
-// Option to clear all
-// Clear individual
-
-//Fetch favourites on page load
-
-// Check there are favs in local storage
-
-// Add event listener to all add to fav buttons
-
-
 // When the recipe list is populated from getRecipe() a 'Add to favs' button is added to each element
 // Depending on which recipe 'add to fav' button was clicked the recipeId and recipeName are stored in variables
 // addFavRecipe() function is run with id and name as arguements
@@ -286,21 +269,21 @@ function addFavRecipe(recipeId, recipeName) {
 
 
 // Fetch recipes from local storage and paste into dom
-// function getFavRecipe() {
-//     let getFav = JSON.parse(localStorage.getItem('favRecipe'))
-// // if the item already exists in the dom do not make new
-//     if (getFav !== null) {
-//             getFav.forEach(item => {
-//                 let favUl = document.querySelector('#favList')
-//                 let favLi = document.createElement("li")
-//                 favLi.classList.add('favRecipe')
-//                 favUl.appendChild(favLi)
+function getFavRecipe() {
+    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
+// if the item already exists in the dom do not make new
+    if (getFav !== null) {
+            getFav.forEach(item => {
+                let favUl = document.querySelector('#favList')
+                let favLi = document.createElement("li")
+                favLi.classList.add('favRecipe')
+                favUl.appendChild(favLi)
                 
-//                 favLi.innerHTML += item[1]
-//             })
-//         }
+                favLi.innerHTML += item[1]
+            })
+        }
 
-// }
+}
 
 getFavRecipe()
 
@@ -308,34 +291,6 @@ getFavRecipe()
 function clearFavRecipe() {
     localStorage.clear()
     document.querySelector('#favoriteRecipesContainer').textContent = "No favourites selected"
-}
-
-// test
-function getFavRecipe() {
-    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
-    let existingRecipe = document.querySelectorAll('.favRecipe')
-    
-    if (getFav !== null || getFav === null ) {
-            getFav.forEach(item => {
-
-                    let favUl = document.querySelector('#favList')
-                    let favLi = document.createElement("li")
-                    favLi.classList.add('favRecipe')
-                    favUl.appendChild(favLi)
-                    
-                    favLi.innerHTML += `<a href="#" onclick="showRecipe(${item[0]})"class="recipeTitles" ">${item[1]}</a>`
-            })
-        }
-    // } else {
-    //     let favUl = document.querySelector('#favList')
-    //     let favLi = document.createElement("li")
-    //     favLi.classList.add('favRecipe')
-    //     favUl.appendChild(favLi)
-    //     let lastAdded = getFav.at(-1)
-                
-    //     favLi.innerHTML += lastAdded[1]
-    // }
-        
 }
 
 const hiddenElements = document.querySelectorAll('.hiddenLeft');

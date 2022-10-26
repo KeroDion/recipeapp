@@ -56,38 +56,34 @@
             
         </section>
     </section>
+
     <section id="recipeDetails">
-    
-
-                <div>
-                    <button type="button" id="imgSearch">imgSearch</button>
-                </div>
-
-    <img src="" alt="">
-    
-
-    <div><ul id="missingIngredientsList"></ul></div>
-    <div><ol id="recipeInstructions"></ol></div>
-
-    <div id="favoriteRecipesContainer">
-        <ul id="favList">
         <h2 id="recipeHeading" class="hiddenResponsive heading hiddenLeft">Recipe</h2>
         <div class="hiddenLeft" id="recipeContainer"></div>
         <h2 class="hiddenLeft" id="recipeTitle"></h2>
-
-        </ul>
-    </div>
-    <button id="clearFavs" onclick="clearFavRecipe()">Remove Favourites</button>
+    
         <img class="hiddenLeft" src="" alt="">
-
+    
         <h2 class="hiddenResponsive hiddenLeft">Ingredients</h2>
         <div  class="hiddenLeft"><ul id="ingredientsList"></ul></div>
         <h2 class="hiddenResponsive hiddenLeft">Instructions</h2>
         <div  class="hiddenLeft"><ol id="recipeInstructions"></ol></div> 
+    
     </section>
+
+    <section id="favRecipe">
+        <div id="favoriteRecipesContainer">
+            <ul id="favList">
+    
+            </ul>
+        </div>
+        <button id="clearFavs" onclick="clearFavRecipe()">Remove Favourites</button>
+    </section>
+   
     <!-- this is a link to the gsap api i think... -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src=https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js></script>
     <script text="text/javascript" src="js/main.js"></script>
 </body>
 </html>
+
