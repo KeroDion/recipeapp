@@ -236,7 +236,6 @@ window.addEventListener('load', function() {
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-        console.log(entry)
         if (entry.isIntersecting) {
             entry.target.classList.add('show');
         } else {
@@ -260,30 +259,30 @@ function getClickedFav(){
 }
 
 // recipeId and recipeName are pushed into a new array of favorite recipes
-function addFavRecipe(recipeId, recipeName) {
-    let favRecipeArr = JSON.parse(localStorage.getItem('favRecipe') || "[]")
-    favRecipeArr.push([recipeId, recipeName])
-    localStorage.setItem('favRecipe', JSON.stringify(favRecipeArr))
-    getFavRecipe()
-}
+// function addFavRecipe(recipeId, recipeName) {
+//     let favRecipeArr = JSON.parse(localStorage.getItem('favRecipe') || "[]")
+//     favRecipeArr.push([recipeId, recipeName])
+//     localStorage.setItem('favRecipe', JSON.stringify(favRecipeArr))
+//     getFavRecipe()
+// }
 
 
 // Fetch recipes from local storage and paste into dom
-function getFavRecipe() {
-    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
-// if the item already exists in the dom do not make new
-    if (getFav !== null) {
-            getFav.forEach(item => {
-                let favUl = document.querySelector('#favList')
-                let favLi = document.createElement("li")
-                favLi.classList.add('favRecipe')
-                favUl.appendChild(favLi)
+// function getFavRecipe() {
+//     let getFav = JSON.parse(localStorage.getItem('favRecipe'))
+// // if the item already exists in the dom do not make new
+//     if (getFav !== null) {
+//             getFav.forEach(item => {
+//                 let favUl = document.querySelector('#favList')
+//                 let favLi = document.createElement("li")
+//                 favLi.classList.add('favRecipe')
+//                 favUl.appendChild(favLi)
                 
-                favLi.innerHTML += item[1]
-            })
-        }
+//                 favLi.innerHTML += item[1]
+//             })
+//         }
 
-}
+// }
 
 getFavRecipe()
 
@@ -295,3 +294,42 @@ function clearFavRecipe() {
 
 const hiddenElements = document.querySelectorAll('.hiddenLeft');
 hiddenElements.forEach((el) => observer.observe(el));
+
+
+// when add to favs is clicked
+
+
+function getFavRecipe() {
+    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
+// if the item already exists in the dom do not make new
+
+if (getFav !== null || getFav === []) {
+    getFav.forEach(item => {
+        let favUl = document.querySelector('#favList')
+        let favLi = document.createElement("li")
+        favLi.classList.add('favRecipe')
+        favUl.appendChild(favLi)
+        
+        favLi.innerHTML += item[1]
+    })
+}
+}
+
+
+function addFavRecipe(recipeId, recipeName) {
+    let favRecipeArr = JSON.parse(localStorage.getItem('favRecipe') || "[]")
+    console.log(favRecipeArr)
+    if (favRecipeArr === null || favRecipeArr.length === 0) {
+        let favArr = []
+        favArr.push([recipeId, recipeName])
+        localStorage.setItem('favRecipe', JSON.stringify(favArr))
+    } else {
+        if(!favRecipeArr.find(el => el[0] === recipeId)) {
+            favRecipeArr.push([recipeId, recipeName])
+            localStorage.setItem('favRecipe', JSON.stringify(favRecipeArr))
+        } else {
+            alert("Recipe is already in your favourites")
+        }
+    }
+    getFavRecipe()
+}
