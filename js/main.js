@@ -140,7 +140,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.missedIngredientCount - b.missedIngredientCount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
+            return recipeArray.map((el, i) =>  `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+            
             
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
@@ -149,7 +150,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.pricePerServing - b.pricePerServing)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Price Per Serving: $${(el.pricePerServing / 100).toFixed(2)}</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Price Per Serving: $${(el.pricePerServing / 100).toFixed(2)}</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     //THis reorders the recipes from most to least protein
@@ -158,7 +160,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => b.nutrition.nutrients[8].amount - a.nutrition.nutrients[8].amount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Protein: ${(el.nutrition.nutrients[8].amount).toFixed(2)}g</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Protein: ${(el.nutrition.nutrients[8].amount).toFixed(2)}g</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     } else if (event.target.value == 'sortCarbs') {
@@ -166,7 +169,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[3].amount - b.nutrition.nutrients[3].amount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Carbohydrates: ${(el.nutrition.nutrients[3].amount).toFixed(2)}g</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Carbohydrates: ${(el.nutrition.nutrients[3].amount).toFixed(2)}g</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+            
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     } else if (event.target.value == 'sortCalories') {
@@ -174,10 +178,12 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[0].amount - b.nutrition.nutrients[0].amount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Calories: ${(el.nutrition.nutrients[0].amount).toFixed(0)}kcal</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Calories: ${(el.nutrition.nutrients[0].amount).toFixed(0)}kcal</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+            
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     }
+    getClickedFav()
 }
 
 
