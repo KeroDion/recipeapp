@@ -262,7 +262,7 @@ function getClickedFav(){
 // Clear favourite recipes from local storage
 function clearFavRecipe() {
     localStorage.clear()
-    document.querySelector('#favoriteRecipesContainer').textContent = "No favourites selected"
+    document.querySelector('#favList').textContent = "No favourites selected"
 }
 
 const hiddenElements = document.querySelectorAll('.hiddenLeft');
@@ -274,6 +274,7 @@ function addFavRecipe(recipeId, recipeName) {
     console.log(favRecipeArr)
     if (favRecipeArr === null || favRecipeArr.length === 0) {
         let favArr = []
+        document.querySelector('#favList').textContent = ""
         favArr.push([recipeId, recipeName])
         localStorage.setItem('favRecipe', JSON.stringify(favArr))
         addSingleRecipe()
