@@ -3,10 +3,8 @@ gsap.registerPlugin(ScrollTrigger)
 document.querySelector('#btn').addEventListener('click',() => {
     getRecipe();
     removeHidden();
-    
-  
-    
 });
+
 //This uses event delegation to target each anchor text when clicked
 document.querySelector('#recipeTitleContainer').addEventListener('click', event => {
     if (event.target.className === 'recipeTitles') {
@@ -31,7 +29,7 @@ function getRecipe(){
 
 
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
-    let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=a0ed62a1ff30488f91a66b24fec77e58&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
+    let url =`https://api.spoonacular.com/recipes/complexSearch?&apiKey=e7a6944d818f4661b9a9898bbd4bac4b&includeIngredients=${ingredients}&addRecipeInformation=true&instructionsRequired=true&number=20&fillIngredients=true&addRecipeNutrition=true`
     fetch(url)
         .then(res => res.json()) // parse response as JSON
         .then(data => {
@@ -46,7 +44,7 @@ function getRecipe(){
             console.log(`recipe array after ${recipeArray}`)
             //This is a function that wraps the titles of the returned recipes in <h2> and <a> tags to input into the dom
             let recipeTitles = function(){
-                return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
+                return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
             }
             
             document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
@@ -60,6 +58,7 @@ function getRecipe(){
                 stagger:.1
               });
                 
+            getClickedFav()
             })
             .catch(err => {
                 console.log(`error ${err}`)
@@ -76,7 +75,7 @@ function showRecipe(id) {
     console.log(`targetRecipe ${targetRecipe}`)
     //Add the image of the target recipe to the DOM
     document.querySelector('img').src = targetRecipe.image;
-    //Ectract the lise of missing ingredients form the target recipe and wrap them in li tags
+    //Extract the list of missing ingredients form the target recipe and wrap them in li tags
     let ingredientsList = targetRecipe.extendedIngredients.map(el => el = `<li>${el.name}</li>`).join('');
     //
     console.log(`ingredientsList ${ingredientsList}`)
@@ -112,11 +111,6 @@ let imageUrlFetch = `https://api.spoonacular.com/food/images/analyze?apiKey=2d7e
             });
 }
 
- 
-
-        
-        
-
 
 function removeHidden() {
     let hiddenElements = document.querySelectorAll('.hidden');
@@ -138,7 +132,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.missedIngredientCount - b.missedIngredientCount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2>`).join('')
+            return recipeArray.map((el, i) =>  `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+            
             
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
@@ -147,7 +142,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.pricePerServing - b.pricePerServing)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Price Per Serving: $${(el.pricePerServing / 100).toFixed(2)}</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Price Per Serving: $${(el.pricePerServing / 100).toFixed(2)}</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     //THis reorders the recipes from most to least protein
@@ -156,7 +152,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => b.nutrition.nutrients[8].amount - a.nutrition.nutrients[8].amount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Protein: ${(el.nutrition.nutrients[8].amount).toFixed(2)}g</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Protein: ${(el.nutrition.nutrients[8].amount).toFixed(2)}g</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     } else if (event.target.value == 'sortCarbs') {
@@ -164,7 +161,8 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[3].amount - b.nutrition.nutrients[3].amount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Carbohydrates: ${(el.nutrition.nutrients[3].amount).toFixed(2)}g</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Carbohydrates: ${(el.nutrition.nutrients[3].amount).toFixed(2)}g</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+            
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     } else if (event.target.value == 'sortCalories') {
@@ -172,10 +170,12 @@ function changeRecipeOrder(event) {
         recipeArray = recipeArray.sort((a,b) => a.nutrition.nutrients[0].amount - b.nutrition.nutrients[0].amount)
         let recipeTitles = function(){
             
-            return recipeArray.map((el, i) => `<h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Calories: ${(el.nutrition.nutrients[0].amount).toFixed(0)}kcal</h2>`).join('')
+            return recipeArray.map((el, i) => `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- Calories: ${(el.nutrition.nutrients[0].amount).toFixed(0)}kcal</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
+            
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     }
+    getClickedFav()
 }
 
 
@@ -234,7 +234,6 @@ window.addEventListener('load', function() {
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-        console.log(entry)
         if (entry.isIntersecting) {
             entry.target.classList.add('show');
         } else {
@@ -245,3 +244,111 @@ const observer = new IntersectionObserver((entries) => {
 
 const hiddenElements = document.querySelectorAll('.hiddenLeft');
 hiddenElements.forEach((el) => observer.observe(el));
+
+
+
+
+// ---------- ADD TO FAVOURITES --------------- // 
+
+// when ingredients are searched a button is created for each recipe to add to favourites
+function getClickedFav(){
+    const addFavButtons = document.querySelectorAll('.addFav')
+        addFavButtons.forEach(favBtn => {
+            favBtn.addEventListener('click', function handleClick(event) {
+                let recipeId = event.target.previousElementSibling.firstChild.id
+                let recipeName = event.target.previousElementSibling.firstChild.textContent
+                addFavRecipe(recipeId, recipeName)
+         })
+    });
+}
+
+// Fetch's favourite recipe from API using the id
+function fetchFavRecipe(id){
+    
+    //Url of spoonacular api, with authentication key(got by making an account). id from clicking on fav element.
+    let url =`https://api.spoonacular.com/recipes/${id}/information?apiKey=e7a6944d818f4661b9a9898bbd4bac4b`
+    fetch(url)
+        .then(res => res.json()) // parse response as JSON
+        .then(data => {
+            console.log(data) //gets the recipe object data
+            // Makes recipe container titles appear
+            removeHiddenResponsive()
+            document.querySelector('#recipeTitle').innerHTML = data.title
+            document.querySelector('img').src = data.image;
+
+            // creates list of ingredients
+            let ingredientsList = data.extendedIngredients.map(el => el = `<li>${el.name}</li>`).join('');
+            document.querySelector('#ingredientsList').innerHTML = ingredientsList;
+
+            // creates instructions for recipe
+            let recipeInstructions = data.analyzedInstructions[0].steps.map(el => `<li>${el.number}: ${el.step}</li>`).join('')
+            document.querySelector('#recipeInstructions').innerHTML = recipeInstructions;
+                       
+            })
+            .catch(err => {
+                console.log(`error ${err}`)
+            });
+}
+
+
+// Clear favourite recipes from local storage
+function clearFavRecipe() {
+    localStorage.clear()
+    document.querySelector('#favList').textContent = "No favourites selected"
+}
+
+// Adds favourite recipe to local storage
+function addFavRecipe(recipeId, recipeName) {
+    let favRecipeArr = JSON.parse(localStorage.getItem('favRecipe') || "[]")
+    console.log(favRecipeArr)
+    // create array if no fav recipes exist yet
+    if (favRecipeArr === null || favRecipeArr.length === 0) {
+        let favArr = []
+        document.querySelector('#favList').textContent = ""
+        favArr.push([recipeId, recipeName])
+        localStorage.setItem('favRecipe', JSON.stringify(favArr))
+        addSingleRecipe()
+    } else {
+        // checks to see if recipe is already in favs, if not then add
+        if(!favRecipeArr.find(el => el[0] === recipeId)) {
+            favRecipeArr.push([recipeId, recipeName])
+            localStorage.setItem('favRecipe', JSON.stringify(favRecipeArr))
+            addSingleRecipe()
+        } else {
+            alert("Recipe is already in your favourites")
+        }
+    }
+}
+
+
+// Loads all fav recipes on to the page
+function getAllFavRecipe() {
+    let getFav = JSON.parse(localStorage.getItem('favRecipe') || "[]")
+    if (getFav !== null || getFav !== [] )
+        getFav.forEach(item => {
+            let favUl = document.querySelector('#favList')
+            let favLi = document.createElement("li")
+            favLi.classList.add('favRecipe')
+            favUl.appendChild(favLi)
+                
+            favLi.innerHTML += `<a href="#" onclick="fetchFavRecipe(${item[0]})"class="recipeTitles" ">${item[1]}</a>`
+        })
+    else {
+        return
+    }
+}
+
+// runs on page load/refresh
+getAllFavRecipe()
+
+// Adds single recipe to the page
+function addSingleRecipe() {
+    let getFav = JSON.parse(localStorage.getItem('favRecipe'))
+    let newRecipe = getFav.at(-1)
+    let favUl = document.querySelector('#favList')
+    let favLi = document.createElement("li")
+    favLi.classList.add('favRecipe')
+    favUl.appendChild(favLi)
+        
+    favLi.innerHTML = `<a href="#" onclick="fetchFavRecipe(${newRecipe[0]})"class="recipeTitles" ">${newRecipe[1]}</a>`
+}
