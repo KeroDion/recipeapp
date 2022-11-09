@@ -10,7 +10,6 @@ document.querySelector('#recipeTitleContainer').addEventListener('click', event 
     if (event.target.className === 'recipeTitles') {
         showRecipe(event.target.id);
   }
-  
 });
 
 //This event listener triggers when a select option is chosen and reorders the recipes
@@ -59,6 +58,7 @@ function getRecipe(){
               });
                 
             getClickedFav()
+            markFavStar(recipeArray)
             })
             .catch(err => {
                 console.log(`error ${err}`)
@@ -134,7 +134,6 @@ function changeRecipeOrder(event) {
             
             return recipeArray.map((el, i) =>  `<div class="recipeContainer"><h2><a href="#" class="recipeTitles" id="${el.id}">${el.title}</a> -- ${el.missedIngredientCount} ingredient${el.missedIngredientCount > 1 ? 's' : ''} missing</h2><button type='button' class='addFav material-symbols-outlined'>star</button></div>`).join('')
             
-            
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     //This reorders the recipes from least to most price per serving and adds text about the price per serving rounded to two digits
@@ -146,6 +145,7 @@ function changeRecipeOrder(event) {
 
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
+        
     //THis reorders the recipes from most to least protein
     } else if (event.target.value == 'sortProtein') {
         
@@ -175,6 +175,7 @@ function changeRecipeOrder(event) {
         }
         document.querySelector('#recipeTitleContainer').innerHTML = recipeTitles()
     }
+    markFavStar(recipeArray)
     getClickedFav()
 }
 
@@ -257,6 +258,7 @@ function getClickedFav(){
             favBtn.addEventListener('click', function handleClick(event) {
                 let recipeId = event.target.previousElementSibling.firstChild.id
                 let recipeName = event.target.previousElementSibling.firstChild.textContent
+                let fillStar = event.target.classList.add('fillStar')
                 addFavRecipe(recipeId, recipeName)
          })
     });
@@ -292,9 +294,21 @@ function fetchFavRecipe(id){
 
 
 // Clear favourite recipes from local storage
-function clearFavRecipe() {
+function clearAllFavRecipe() {
     localStorage.clear()
     document.querySelector('#favList').textContent = "No favourites selected"
+    document.querySelectorAll('.fillStar').forEach(el => el.classList.remove('fillStar'))
+}
+
+// clear individual recipe from favs including star fill
+function clearSingleFavRecipe(id) {
+    let stringId = id.toString()
+    let favRecipeArr = JSON.parse(localStorage.getItem('favRecipe'))
+    let removed = favRecipeArr.filter(item => item.id !== stringId)
+    localStorage.setItem('favRecipe', JSON.stringify(removed))
+    event.target.parentElement.remove()
+    let element = document.getElementById(id)
+    let starFill = element.parentElement.nextSibling.classList.remove('fillStar')
 }
 
 // Adds favourite recipe to local storage
@@ -305,13 +319,13 @@ function addFavRecipe(recipeId, recipeName) {
     if (favRecipeArr === null || favRecipeArr.length === 0) {
         let favArr = []
         document.querySelector('#favList').textContent = ""
-        favArr.push([recipeId, recipeName])
+        favArr.push({id:recipeId, title: recipeName})
         localStorage.setItem('favRecipe', JSON.stringify(favArr))
         addSingleRecipe()
     } else {
         // checks to see if recipe is already in favs, if not then add
-        if(!favRecipeArr.find(el => el[0] === recipeId)) {
-            favRecipeArr.push([recipeId, recipeName])
+        if(!favRecipeArr.find(el => el.id === recipeId)) {
+            favRecipeArr.push({id:recipeId, title: recipeName})
             localStorage.setItem('favRecipe', JSON.stringify(favRecipeArr))
             addSingleRecipe()
         } else {
@@ -331,11 +345,8 @@ function getAllFavRecipe() {
             favLi.classList.add('favRecipe')
             favUl.appendChild(favLi)
                 
-            favLi.innerHTML += `<a href="#" onclick="fetchFavRecipe(${item[0]})"class="recipeTitles" ">${item[1]}</a>`
+            favLi.innerHTML += `<a href="#" onclick="fetchFavRecipe(${item.id})" id="${item.id}" class="recipeTitles fav">${item.title}</a><span class="material-symbols-outlined" onclick="clearSingleFavRecipe(${item.id})">delete</span>`
         })
-    else {
-        return
-    }
 }
 
 // runs on page load/refresh
@@ -350,5 +361,28 @@ function addSingleRecipe() {
     favLi.classList.add('favRecipe')
     favUl.appendChild(favLi)
         
-    favLi.innerHTML = `<a href="#" onclick="fetchFavRecipe(${newRecipe[0]})"class="recipeTitles" ">${newRecipe[1]}</a>`
+    favLi.innerHTML = `<a href="#" onclick="fetchFavRecipe(${newRecipe.id})" id="${newRecipe.id}" class="recipeTitles fav" ">${newRecipe.title}</a><span class="material-symbols-outlined" onclick="clearSingleFavRecipe(${newRecipe.id})">delete</span>`
 }
+
+
+// Makes fav button star filled in if the recipe is in favs
+
+function markFavStar(recipeArr) {
+    // search id array
+    let searchIds = recipeArr.map(el => el.id)
+
+    // fav id array
+    let favRecipeArr = JSON.parse(localStorage.getItem('favRecipe'))
+    let favIds = favRecipeArr.map(el => Number(el.id))
+
+    //compare each search id to fav id and add star fill class to it
+    searchIds.forEach(element => {
+        for(let i = 0; i <= favIds.length; i++) {
+            if (element === favIds[i]) {
+                let recipeDiv = document.getElementById(element)
+                let starFill = recipeDiv.parentElement.nextSibling.classList.add('fillStar')
+            }
+        }
+    })
+}
+
