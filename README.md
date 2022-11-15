@@ -4,7 +4,7 @@ What's In The Fridge Application targets ingredients in the fridge and its filte
 
 **Link to project:** https://github.com/KeroDion/recipeapp
 
-![A shot of the project](https://user-images.githubusercontent.com/107049081/197981430-109e4b55-098a-4953-8786-0cce0b682cd8.png)
+![A shot of the project](https://media1.giphy.com/media/N2wqoSb09E8ULQ2lDd/giphy.gif?cid=790b76110c951f041c741309b43e805c2c82fec7de323b38&rid=giphy.gif&ct=g)
 
 
 ## How It's Made:
