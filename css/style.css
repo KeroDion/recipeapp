@@ -122,6 +122,21 @@ input {
     padding: 1rem;
     width: 20rem;
 }
+#ingredientForm > * {
+    padding: 1rem;
+    width: 20rem;
+    margin: .5rem;
+}
+
+.material-symbols-outlined {
+    color: black;
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 48
+  
+}
 
 a {
     color: white;

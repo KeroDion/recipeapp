@@ -24,7 +24,14 @@ let recipeArray = [];
 
 function getRecipe(){
     
-    let ingredients = document.querySelector('#ingredient').value
+    // let ingredients = document.querySelector('#ingredient').value
+    
+    let ingredients = ''
+
+    for(let i = 0;i < count;i++){
+        ingredients += `${document.getElementsByName('ingredients')[i].value},`
+    }
+    console.log(ingredients)
 
 
     //Url of spoonacular api, with authentication key(got by making an account). Type in ingredients to get an Array of Recipe titles
@@ -386,3 +393,29 @@ function markFavStar(recipeArr) {
     })
 }
 
+document.querySelector('#addIngredient').addEventListener('click',addIngredients)
+var count = 1
+//Function to add input in the form for Ingredients
+function addIngredients(){
+    let ingredients = document.querySelector('#ingredientForm')
+    let limit = 10
+    
+    if(ingredients){
+        if( count < limit){
+            let newInput = document.createElement('input')
+            newInput.type = 'text'
+            newInput.name = 'ingredients'
+            newInput.class = 'ingredients'
+            newInput.placeholder ='Search by Ingredient'
+            
+            
+            if(newInput){
+                ingredients.appendChild(newInput)
+                gsap.to('input', {duration: 3, backgroundColor: 'white'})
+
+                count++
+            }
+        }
+       
+    }
+}
